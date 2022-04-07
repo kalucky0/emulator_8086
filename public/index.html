@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="description" content="Emulator 8086" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#000000" />
+  <title>Emulator 8086</title>
+  <link rel="icon" href="./assets/icon.png" />
+  <link rel="stylesheet" href="./static/css/style.css" />
+  <script src="./static/bundle/script.js" defer></script>
+</head>
+
+<body>
+  <div class="container">
+
+    <div id="registers">
+      <header>Registers</header>
+
+      <div></div>
+      <div class="reg-name">H</div>
+      <div class="reg-name">L</div>
+
+      <div class="reg-name">AX</div>
+      <div class="reg-val">
+        <input type="text" class="input" id="ah" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="al" minlength="2" maxlength="2" value="00">
+      </div>
+
+      <div class="reg-name">BX</div>
+      <div class="reg-val">
+        <input type="text" class="input" id="bh" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="bl" minlength="2" maxlength="2" value="00">
+      </div>
+
+      <div class="reg-name">CX</div>
+      <div class="reg-val">
+        <input type="text" class="input" id="ch" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="cl" minlength="2" maxlength="2" value="00">
+      </div>
+
+      <div class="reg-name">DX</div>
+      <div class="reg-val">
+        <input type="text" class="input" id="dh" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="dl" minlength="2" maxlength="2" value="00">
+      </div>
+
+      <div class="reg-name">SI</div>
+      <div class="reg-val2">
+        <input type="text" class="input2" id="si" minlength="4" maxlength="4" value="0000">
+      </div>
+
+      <div class="reg-name">DI</div>
+      <div class="reg-val2">
+        <input type="text" class="input2" id="di" minlength="4" maxlength="4" value="0000">
+      </div>
+
+      <div class="reg-name">BP</div>
+      <div class="reg-val2">
+        <input type="text" class="input2" id="bp" minlength="4" maxlength="4" value="0000">
+      </div>
+
+      <div class="reg-name">SP</div>
+      <div class="reg-val2">
+        <input type="text" class="input2" id="sp" minlength="4" maxlength="4" value="0000">
+      </div>
+
+      <div class="reg-name">DISP</div>
+      <div class="reg-val2">
+        <input type="text" class="input2" id="disp" minlength="4" maxlength="4" value="0000">
+      </div>
+    </div>
+
+    <div id="commands">
+      <header>Command input</header>
+
+      <div class="command-field">
+        <input type="text" class="command-field-input-box" id="command0" maxlength="64" size="30%">
+      </div>
+
+      <header>Controls</header>
+
+      <div class="separator"></div>
+
+      <div id="execBtn">Execute command</div>
+      <div class="ctrl-btn" id="randomBtn">Random</div>
+      <div class="ctrl-btn" id="resetRegBtn">Reset registers</div>
+      <div class="ctrl-btn" id="resetDataBtn">Reset data segment</div>
+      <div class="ctrl-btn" id="resetStackBtn">Reset stack segment</div>
+    </div>
+
+    <div id="memory">
+      <header>
+        Data segment (64KB), viewed starting from address:
+        <input type="text" class="input2" id="memoryViewAddress" minlength="4" maxlength="4" value="0000">
+        h
+      </header>
+
+      <div></div>
+      <div class="reg-name">0</div>
+      <div class="reg-name">1</div>
+      <div class="reg-name">2</div>
+      <div class="reg-name">3</div>
+      <div class="reg-name">4</div>
+      <div class="reg-name">5</div>
+      <div class="reg-name">6</div>
+      <div class="reg-name">7</div>
+      <div class="reg-name">8</div>
+      <div class="reg-name">9</div>
+      <div class="reg-name">A</div>
+      <div class="reg-name">B</div>
+      <div class="reg-name">C</div>
+      <div class="reg-name">D</div>
+      <div class="reg-name">E</div>
+      <div class="reg-name">F</div>
+
+      <div class="reg-name" id="mem-name0">0000</div>
+      <div class="reg-val">
+        <input type="text" class="input" id="0a" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="1a" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="2a" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="3a" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="4a" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="5a" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="6a" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="7a" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="8a" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="9a" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="Aa" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="Ba" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="Ca" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="Da" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="Ea" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="Fa" minlength="2" maxlength="2" value="00">
+      </div>
+
+      <div class="reg-name" id="mem-name1">0010</div>
+      <div class="reg-val">
+        <input type="text" class="input" id="0b" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="1b" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="2b" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="3b" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="4b" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="5b" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="6b" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="7b" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="8b" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="9b" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="Ab" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="Bb" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="Cb" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="Db" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="Eb" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="Fb" minlength="2" maxlength="2" value="00">
+      </div>
+
+      <div class="reg-name" id="mem-name2">0020</div>
+      <div class="reg-val">
+        <input type="text" class="input" id="0c" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="1c" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="2c" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="3c" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="4c" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="5c" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="6c" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="7c" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="8c" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="9c" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="Ac" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="Bc" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="Cc" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="Dc" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="Ec" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="Fc" minlength="2" maxlength="2" value="00">
+      </div>
+
+      <div class="reg-name" id="mem-name3">0030</div>
+      <div class="reg-val">
+        <input type="text" class="input" id="0d" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="1d" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="2d" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="3d" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="4d" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="5d" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="6d" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="7d" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="8d" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="9d" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="Ad" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="Bd" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="Cd" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="Dd" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="Ed" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="Fd" minlength="2" maxlength="2" value="00">
+      </div>
+    </div>
+
+    <div id="stack">
+      <header>
+        Stack segment (64KB), viewed starting from address:
+        <input type="text" class="input2" id="stackViewAddress" minlength="4" maxlength="4" value="0000">
+        h
+      </header>
+
+      <div></div>
+      <div class="reg-name">0</div>
+      <div class="reg-name">1</div>
+      <div class="reg-name">2</div>
+      <div class="reg-name">3</div>
+      <div class="reg-name">4</div>
+      <div class="reg-name">5</div>
+      <div class="reg-name">6</div>
+      <div class="reg-name">7</div>
+      <div class="reg-name">8</div>
+      <div class="reg-name">9</div>
+      <div class="reg-name">A</div>
+      <div class="reg-name">B</div>
+      <div class="reg-name">C</div>
+      <div class="reg-name">D</div>
+      <div class="reg-name">E</div>
+      <div class="reg-name">F</div>
+
+      <div class="reg-name" id="stack-name0">0000</div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s0a" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s1a" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s2a" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s3a" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s4a" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s5a" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s6a" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s7a" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s8a" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s9a" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="sAa" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="sBa" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="sCa" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="sDa" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="sEa" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="sFa" minlength="2" maxlength="2" value="00">
+      </div>
+
+      <div class="reg-name" id="stack-name1">0010</div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s0b" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s1b" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s2b" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s3b" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s4b" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s5b" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s6b" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s7b" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s8b" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s9b" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="sAb" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="sBb" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="sCb" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="sDb" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="sEb" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="sFb" minlength="2" maxlength="2" value="00">
+      </div>
+
+      <div class="reg-name" id="stack-name2">0020</div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s0c" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s1c" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s2c" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s3c" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s4c" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s5c" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s6c" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s7c" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s8c" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s9c" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="sAc" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="sBc" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="sCc" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="sDc" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="sEc" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="sFc" minlength="2" maxlength="2" value="00">
+      </div>
+
+      <div class="reg-name" id="stack-name3">0030</div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s0d" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s1d" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s2d" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s3d" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s4d" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s5d" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s6d" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s7d" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s8d" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="s9d" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="sAd" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="sBd" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="sCd" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="sDd" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="sEd" minlength="2" maxlength="2" value="00">
+      </div>
+      <div class="reg-val">
+        <input type="text" class="input" id="sFd" minlength="2" maxlength="2" value="00">
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
