@@ -92,7 +92,7 @@ body {
   justify-items: center
 }
 
-#commands>.command-field,
+#commands>.cmd-field,
 #commands>header {
   grid-column: 1/-1;
   font-size: 13px;
@@ -109,17 +109,17 @@ body {
   border: 1px solid #000
 }
 
-#commands>.command-field {
+#commands>.cmd-field {
   padding: 0
 }
 
-.command-btn,
-.command-field-input-box {
+.cmd-btn,
+.cmd-input {
   border: 1px solid #000;
   background-color: #2c2c2c
 }
 
-.command-field-input-box {
+.cmd-input {
   outline: 0;
   color: #fff;
   width: 100%;

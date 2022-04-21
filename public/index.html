@@ -84,8 +84,8 @@
     <div id="commands">
       <header>Command input</header>
 
-      <div class="command-field">
-        <input type="text" class="command-field-input-box" id="command0" maxlength="64" size="30%">
+      <div class="cmd-field">
+        <input type="text" class="cmd-input" id="cmd" maxlength="64" size="30%">
       </div>
 
       <header>Controls</header>
@@ -101,9 +101,8 @@
 
     <div id="memory">
       <header>
-        Data segment (64KB), viewed starting from address:
-        <input type="text" class="input2" id="memoryViewAddress" minlength="4" maxlength="4" value="0000">
-        h
+        Memory, starting from:
+        <input type="text" class="input2" id="memAddress" minlength="4" maxlength="4" value="0000">
       </header>
 
       <div></div>
@@ -124,7 +123,7 @@
       <div class="reg-name">E</div>
       <div class="reg-name">F</div>
 
-      <div class="reg-name" id="mem-name0">0000</div>
+      <div class="reg-name mem-name">0000</div>
       <div class="reg-val">
         <input type="text" class="input" id="0a" minlength="2" maxlength="2" value="00">
       </div>
@@ -174,7 +173,7 @@
         <input type="text" class="input" id="Fa" minlength="2" maxlength="2" value="00">
       </div>
 
-      <div class="reg-name" id="mem-name1">0010</div>
+      <div class="reg-name mem-name">0010</div>
       <div class="reg-val">
         <input type="text" class="input" id="0b" minlength="2" maxlength="2" value="00">
       </div>
@@ -224,7 +223,7 @@
         <input type="text" class="input" id="Fb" minlength="2" maxlength="2" value="00">
       </div>
 
-      <div class="reg-name" id="mem-name2">0020</div>
+      <div class="reg-name mem-name">0020</div>
       <div class="reg-val">
         <input type="text" class="input" id="0c" minlength="2" maxlength="2" value="00">
       </div>
@@ -274,7 +273,7 @@
         <input type="text" class="input" id="Fc" minlength="2" maxlength="2" value="00">
       </div>
 
-      <div class="reg-name" id="mem-name3">0030</div>
+      <div class="reg-name mem-name">0030</div>
       <div class="reg-val">
         <input type="text" class="input" id="0d" minlength="2" maxlength="2" value="00">
       </div>
@@ -327,9 +326,8 @@
 
     <div id="stack">
       <header>
-        Stack segment (64KB), viewed starting from address:
-        <input type="text" class="input2" id="stackViewAddress" minlength="4" maxlength="4" value="0000">
-        h
+        Stack, starting from:
+        <input type="text" class="input2" id="stackAddress" minlength="4" maxlength="4" value="0000">
       </header>
 
       <div></div>
@@ -350,7 +348,7 @@
       <div class="reg-name">E</div>
       <div class="reg-name">F</div>
 
-      <div class="reg-name" id="stack-name0">0000</div>
+      <div class="reg-name stack-name">0000</div>
       <div class="reg-val">
         <input type="text" class="input" id="s0a" minlength="2" maxlength="2" value="00">
       </div>
@@ -400,7 +398,7 @@
         <input type="text" class="input" id="sFa" minlength="2" maxlength="2" value="00">
       </div>
 
-      <div class="reg-name" id="stack-name1">0010</div>
+      <div class="reg-name stack-name">0010</div>
       <div class="reg-val">
         <input type="text" class="input" id="s0b" minlength="2" maxlength="2" value="00">
       </div>
@@ -450,7 +448,7 @@
         <input type="text" class="input" id="sFb" minlength="2" maxlength="2" value="00">
       </div>
 
-      <div class="reg-name" id="stack-name2">0020</div>
+      <div class="reg-name stack-name">0020</div>
       <div class="reg-val">
         <input type="text" class="input" id="s0c" minlength="2" maxlength="2" value="00">
       </div>
@@ -500,7 +498,7 @@
         <input type="text" class="input" id="sFc" minlength="2" maxlength="2" value="00">
       </div>
 
-      <div class="reg-name" id="stack-name3">0030</div>
+      <div class="reg-name stack-name">0030</div>
       <div class="reg-val">
         <input type="text" class="input" id="s0d" minlength="2" maxlength="2" value="00">
       </div>
