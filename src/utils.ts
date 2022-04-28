@@ -3,4 +3,4 @@ export const $$ = (selector: any) => <NodeListOf<HTMLElement>>document.querySele
 export const getRandomInt = (min: number, max: number): Number => {
     min = Math.ceil(min);
     return Math.floor(Math.random() * (Math.floor(max) - min)) + min;
-}
+};
