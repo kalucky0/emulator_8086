@@ -265,8 +265,8 @@ const push = (arg: string) => {
     if (argSize == null) {
         value = arg;
     } else {
-        if (argSize < 4) return "wrong register: " + arg;
-        value = getRegisterValue(arg) ?? "";
+        if (argSize < 4) return 'wrong register: ' + arg;
+        value = getRegisterValue(arg) ?? '';
         value = value.toLowerCase();
     }
 
@@ -276,36 +276,78 @@ const push = (arg: string) => {
 
     const newPointer = parseInt(reg.sp.value, 16) + 2;
     const res1 = setRegister('sp', newPointer);
-    if (res) return res;
-    
+    if (res1) return res1;
+
     viewStack(stackAddress, stack);
 };
 
-const mov = (args: string[]) => { };
+const mov = (args: string[]) => {
+    if (args.length != 2) return 'incorrect arguments';
+
+    if (args[0].startsWith('[')) {
+        let address = calcMemoryAddress(args[0]);
+        if (address.length > 5) return address;
+
+        if (getRegisterSize(args[1]) == null)
+            return setMemory(address, args[1]);
+        else
+            return setMemory(address, getRegisterValue(args[1]));
+    }
+
+    if (args[1].startsWith('[')) {
+        let address = calcMemoryAddress(args[1]);
+        if (address.length > 5) return address;
+
+        const argSize = getRegisterSize(args[0])
+        if (argSize == null)
+            return 'wrong register: ' + args[0];
+
+        if (argSize == 2) {
+            return setRegister(args[0], getMemory(address) + 'h');
+        } else {
+            let value = getMemory(`${(parseInt(address, 16) + 1).toHex().padStart(4, '0')}${getMemory(address)}h`);
+            return setRegister(args[0], value);
+        }
+    }
+
+    const arg0Size = getRegisterSize(args[0]);
+    const arg1Size = getRegisterSize(args[1]);
+
+    if (arg0Size == null)
+        return 'wrong register: ' + args[0];
+
+    if (arg1Size == null)
+        return setRegister(args[0], args[1]);
+
+    if (arg0Size == arg1Size)
+        return setRegister(args[0], getRegisterValue(args[1]));
+
+    return 'Registers size do not match';
+};
 
 const xchg = (args: string[]) => { };
 
 export const executeCommand = (cmd: string) => {
-    if (cmd == "") "empty command";
+    if (cmd == '') 'empty command';
     let parts = cmd.toLowerCase().split(/(?<=^\S+)\s/);
 
     if (!parts[1]) {
-        return "no arguments given";
+        return 'no arguments given';
     }
     parts[1] = parts[1].replace(/\s+/g, '');
 
     let args = parts[1].split(',');
 
     switch (parts[0]) {
-        case "mov":
+        case 'mov':
             return mov(args);
-        case "xchg":
+        case 'xchg':
             return xchg(args);
-        case "push":
+        case 'push':
             return push(args[0]);
-        case "pop":
+        case 'pop':
             return pop(args[0]);
         default:
-            return "wrong instruction";
+            return 'wrong instruction';
     }
 }
