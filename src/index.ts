@@ -1,5 +1,5 @@
 import { $, $$ } from './utils';
-import { randomReg, resetData, resetReg, resetStack } from './emulator'
+import { executeCommand, randomReg, resetData, resetReg, resetStack } from './emulator'
 import { Data, Registers } from './types';
 
 export const memAddressInput = $('#memAddress') as HTMLInputElement;
@@ -11,7 +11,7 @@ const stackInputs = $$('#stack .input');
 const memNames = $$('.mem-name');
 const stackNames = $$('.stack-name');
 
-const inputCmd = $('#cmd');
+const inputCmd = $('#cmd') as HTMLInputElement;
 
 const execBtn = $('#execBtn');
 const randomBtn = $('#randomBtn');
@@ -47,8 +47,13 @@ randomBtn.onclick = () => randomReg();
 resetRegBtn.onclick = () => resetReg();
 resetDataBtn.onclick = () => resetData();
 resetStackBtn.onclick = () => resetStack();
+execBtn.onclick = () => {
+  const res = executeCommand(inputCmd.value);
+  if (res) alert(res);
+};
 
-export const viewMemory = (from: string, memory: &Data) => {
+
+export const viewMemory = (from: string, memory: & Data) => {
   from = from.toLowerCase();
 
   let parts: string[] = [];
@@ -79,14 +84,20 @@ export const viewMemory = (from: string, memory: &Data) => {
 
     if (memory[address] == undefined)
       memory[address] = "00";
-    
+
     input.value = memory[address].toUpperCase();
+
+    if (from == address)
+      input.classList.add("highlight");
+    else
+      input.classList.remove("highlight");
+
 
     input.parentElement!.id = address;
   });
 };
 
-export const viewStack = (from: string, stack: &Data) => {
+export const viewStack = (from: string, stack: & Data) => {
   from = from.toLowerCase();
 
   let parts: string[] = [];
@@ -117,9 +128,14 @@ export const viewStack = (from: string, stack: &Data) => {
 
     if (stack[address] == undefined)
       stack[address] = "00";
-    
+
     input.value = stack[address].toUpperCase();
 
     input.parentElement!.id = "s" + address;
+
+    if (reg.sp.value.toLowerCase() == address)
+      input.classList.add("highlight");
+    else
+      input.classList.remove("highlight");
   });
 };

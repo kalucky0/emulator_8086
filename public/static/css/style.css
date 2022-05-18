@@ -29,6 +29,10 @@ body {
   gap: 7px
 }
 
+.highlight {
+  color: #ffc107 !important
+}
+
 #commands,
 #registers,
 .container {

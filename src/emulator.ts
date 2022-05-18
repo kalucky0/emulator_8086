@@ -1,5 +1,5 @@
 import { reg, memAddressInput, stackAddressInput, viewMemory, viewStack } from './index';
-import { getRandomInt } from './utils';
+import { getRandomInt, toHex } from './utils';
 import { Nullable, Data } from './types';
 
 const numbersRegEx = /[^0-9]+/g;
@@ -20,17 +20,17 @@ const setStack = (address: string, value: any) => {
     let hexValue = '';
     address = address.substring(address.length - 4).toLowerCase();
 
-    if (value[value.length - 1] != "h" && value[value.length - 1] != "H") {
+    if (value[value.length - 1] != 'h' && value[value.length - 1] != 'H') {
         if (numbersRegEx.test(value))
-            return "Argument is incorrect value";
+            return 'Argument is incorrect value';
 
         value = parseInt(value);
-        hexValue = value.toString(16);
+        hexValue = value.toHex();
     } else {
         hexValue = value.slice(0, -1);
 
         if (hexRegEx.test(hexValue))
-            return "Argument is incorrect value";
+            return 'Argument is incorrect value';
     }
 
     hexValue = hexValue.toUpperCase();
@@ -43,7 +43,7 @@ const setStack = (address: string, value: any) => {
         if (hexValue.length > 4)
             hexValue = hexValue.substring(hexValue.length - 4);
 
-        stack[(parseInt(address, 16) + 1).toString(16).padStart(4, '0')] = hexValue.slice(0, 2);
+        stack[(parseInt(address, 16) + 1).toHex().padStart(4, '0')] = hexValue.slice(0, 2);
         stack[address] = hexValue.substring(2, 4);
     }
 
@@ -53,37 +53,37 @@ const setStack = (address: string, value: any) => {
 const getStack = (address: string) => {
     address = address.toLowerCase();
     if (stack[address] == undefined)
-        stack[address] = "00";
+        stack[address] = '00';
 
     return stack[address];
 };
 
 const calcMemoryAddress = (param: any) => {
     param = param.slice(1, -1);
-    let regs = param.split("+");
+    let regs = param.split('+');
 
     let sum = 0;
 
     for (let r of regs) {
-        if (r == "bx" || r == "bp" || r == "si" || r == "di" || r == "disp") {
+        if (r == 'bx' || r == 'bp' || r == 'si' || r == 'di' || r == 'disp') {
             sum += parseInt(reg[r].value, 16);
         } else {
-            if (r[r.length - 1] != "h" && r[r.length - 1] != "H") {
+            if (r[r.length - 1] != 'h' && r[r.length - 1] != 'H') {
                 if (numbersRegEx.test(r))
-                    return r + " can't be used to adress memory";
+                    return r + ' can\'t be used to adress memory';
 
                 sum += parseInt(r);
             } else {
                 r = r.slice(0, -1);
                 if (hexRegEx.test(r))
-                    return r + " can't be used to adress memory";
+                    return r + ' can\'t be used to adress memory';
 
                 sum += parseInt(r, 16);
             }
         }
     }
 
-    return sum.toString(16).padStart(4, '0');
+    return sum.toHex().padStart(4, '0');
 }
 
 const setMemory = (address: string, value: any) => {
@@ -91,12 +91,12 @@ const setMemory = (address: string, value: any) => {
 
     address = address.substring(address.length - 4).toLowerCase();
 
-    if (value[value.length - 1] != "h" && value[value.length - 1] != "H") {
+    if (value[value.length - 1] != 'h' && value[value.length - 1] != 'H') {
         if (numbersRegEx.test(value))
             return 'Argument is incorrect value';
 
         value = parseInt(value);
-        hexValue = value.toString(16);
+        hexValue = value.toHex();
     } else {
         hexValue = value.slice(0, -1);
 
@@ -114,7 +114,7 @@ const setMemory = (address: string, value: any) => {
         if (hexValue.length > 4)
             hexValue = hexValue.substring(hexValue.length - 4);
 
-        memory[(parseInt(address, 16) + 1).toString(16).padStart(4, '0')] = hexValue.slice(0, 2);
+        memory[(parseInt(address, 16) + 1).toHex().padStart(4, '0')] = hexValue.slice(0, 2);
         memory[address] = hexValue.substring(2, 4);
     }
 
@@ -127,7 +127,7 @@ const setMemory = (address: string, value: any) => {
 const getMemory = (address: string) => {
     address = address.toLowerCase();
     if (memory[address] == undefined)
-        memory[address] = "00";
+        memory[address] = '00';
 
     return memory[address];
 };
@@ -142,7 +142,7 @@ const getRegisterSize = (register: string): Nullable<Number> => {
         return 2;
 };
 
-const setRegister = (register: string, value: any): Nullable<String> => {
+const setRegister = (register: string, value: any): Nullable<string> => {
     let hexValue = '';
 
     let registerSize = getRegisterSize(register);
@@ -155,7 +155,7 @@ const setRegister = (register: string, value: any): Nullable<String> => {
             return 'Incorrect value';
 
         value = parseInt(value);
-        hexValue = value.toString(16);
+        hexValue = value.toHex();
     } else {
         hexValue = value.slice(0, -1);
 
@@ -165,6 +165,8 @@ const setRegister = (register: string, value: any): Nullable<String> => {
 
     hexValue = hexValue.padStart(registerSize as number, '0');
     hexValue = hexValue.toUpperCase();
+
+    console.log(register, hexValue);
 
     if ((registerSize == 4 && hexValue.length > 4) || (registerSize == 2 && hexValue.length > 2))
         return 'Out of register bounds or incorrect argument';
@@ -184,7 +186,7 @@ const setRegister = (register: string, value: any): Nullable<String> => {
     return null;
 };
 
-const getRegisterValue = (register: string): Nullable<String> => {
+const getRegisterValue = (register: string): Nullable<string> => {
     if (reg[register] == undefined)
         return null;
 
@@ -220,24 +222,90 @@ export const resetReg = () => {
 
 export const resetData = () => {
     for (let entry in memory)
-        memory[entry] = "00";
+        memory[entry] = '00';
 
-    memAddress = "0000";
+    memAddress = '0000';
     viewMemory(memAddress, memory);
 };
 
 export const resetStack = () => {
     for (let entry in stack)
-        stack[entry] = "00";
+        stack[entry] = '00';
 
-    setRegister("sp", 0);
+    setRegister('sp', 0);
 
-    stackAddress = "0000";
+    stackAddress = '0000';
     viewStack(stackAddress, stack);
 };
 
+const pop = (arg: string) => {
+    const argSize = getRegisterSize(arg);
+
+    if (argSize == null || argSize < 4)
+        return 'incorrect register: ' + arg;
+
+    const newPointer = parseInt(reg.sp.value, 16) - 2;
+    if (newPointer < 0) return 'empty stack';
+
+    const res = setRegister('sp', newPointer);
+    if (res) return res;
+
+    viewStack(stackAddress, stack);
+
+    const pointer = reg.sp.value;
+    let value = `${getStack((parseInt(pointer, 16) + 1).toHex().padStart(4, '0'))}${getStack(pointer)}`;
+    value = value.toLowerCase();
+    return setRegister(arg, value + 'h');
+};
 
 const push = (arg: string) => {
-    let argSize = getRegisterSize(arg);
+    const argSize = getRegisterSize(arg);
+
+    let value: string;
+    if (argSize == null) {
+        value = arg;
+    } else {
+        if (argSize < 4) return "wrong register: " + arg;
+        value = getRegisterValue(arg) ?? "";
+        value = value.toLowerCase();
+    }
+
+    const pointer = reg.sp.value;
+    const res = setStack(pointer, value);
+    if (res) return res;
+
+    const newPointer = parseInt(reg.sp.value, 16) + 2;
+    const res1 = setRegister('sp', newPointer);
+    if (res) return res;
     
+    viewStack(stackAddress, stack);
 };
+
+const mov = (args: string[]) => { };
+
+const xchg = (args: string[]) => { };
+
+export const executeCommand = (cmd: string) => {
+    if (cmd == "") "empty command";
+    let parts = cmd.toLowerCase().split(/(?<=^\S+)\s/);
+
+    if (!parts[1]) {
+        return "no arguments given";
+    }
+    parts[1] = parts[1].replace(/\s+/g, '');
+
+    let args = parts[1].split(',');
+
+    switch (parts[0]) {
+        case "mov":
+            return mov(args);
+        case "xchg":
+            return xchg(args);
+        case "push":
+            return push(args[0]);
+        case "pop":
+            return pop(args[0]);
+        default:
+            return "wrong instruction";
+    }
+}
