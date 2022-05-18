@@ -19,7 +19,6 @@ const resetRegBtn = $('#resetRegBtn');
 const resetDataBtn = $('#resetDataBtn');
 const resetStackBtn = $('#resetStackBtn');
 
-const allInputs = $$('.reg-val input');
 export const reg: Registers = {
   ah: $('#ah') as HTMLInputElement,
   al: $('#al') as HTMLInputElement,
