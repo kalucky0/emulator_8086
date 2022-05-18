@@ -325,7 +325,70 @@ const mov = (args: string[]) => {
     return 'Registers size do not match';
 };
 
-const xchg = (args: string[]) => { };
+const xchg = (args: string[]) => {
+    if (args.length != 2) return 'incorrect arguments';
+
+    if (args[0].startsWith('[')) {
+        let address = calcMemoryAddress(args[0]);
+        if (address.length > 5) return address;
+
+        const regSize = getRegisterSize(args[1]);
+        if (regSize == null)
+            return 'wrong register: ' + args[1];
+
+        const tmp = getRegisterValue(args[1]);
+        let result;
+        if (regSize == 2) {
+            result = setRegister(args[1], getMemory(address));
+        } else {
+            let value = `${getMemory((parseInt(address, 16) + 1).toHex().padStart(4, '0'))}${getMemory(address)}h`;
+            result = setRegister(args[1], value);
+        }
+        if (result) return result;
+        result = setMemory(address, tmp);
+        return result;
+    }
+
+    if (args[1].startsWith('[')) {
+        let address = calcMemoryAddress(args[1]);
+        if (address.length > 5) return address;
+
+        const regSize = getRegisterSize(args[0]);
+        if (regSize == null)
+            return 'wrong register: ' + args[0];
+
+        const tmp = getRegisterValue(args[1]);
+        let result;
+        if (regSize == 2) {
+            result = setRegister(args[0], getMemory(address));
+        } else {
+            let value = `${getMemory((parseInt(address, 16) + 1).toHex().padStart(4, '0'))}${getMemory(address)}h`;
+            result = setRegister(args[0], value);
+        }
+        if (result) return result;
+        result = setMemory(address, tmp);
+        return result;
+    }
+
+    const arg0Size = getRegisterSize(args[0]);
+    const arg1Size = getRegisterSize(args[1]);
+
+    if (arg0Size == null)
+        return 'wrong register: ' + args[0];
+
+    if (arg1Size == null)
+        return 'wrong register: ' + args[1];
+
+    if (arg0Size != arg1Size)
+        return 'registers sizes do not match';
+
+    const tmp = getRegisterValue(args[0]);
+    let result = setRegister(args[0], getRegisterValue(args[1]));
+
+    if (result) return result;
+    result = setRegister(args[1], tmp);
+    return result;
+};
 
 export const executeCommand = (cmd: string) => {
     if (cmd == '') 'empty command';
