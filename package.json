@@ -9,7 +9,7 @@
     "test": "jest"
   },
   "keywords": [],
-  "author": "",
+  "author": "kalucky0",
   "type": "module",
   "license": "ISC",
   "dependencies": {

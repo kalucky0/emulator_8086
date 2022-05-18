@@ -1,5 +1,5 @@
-import { reg, memAddressInput, stackAddressInput, viewMemory, viewStack } from './index';
-import { getRandomInt, toHex } from './utils';
+import { reg, memAddressInput, viewMemory, viewStack } from './index';
+import { getRandomInt } from './utils';
 import { Nullable, Data } from './types';
 
 const hexRegEx = /[^0-9a-fA-F]+/g;
@@ -15,11 +15,13 @@ let stack: Data = {
     '0000': '00'
 };
 
-const setStack = (address: string, value: any) => {
+const setStack = (address: string, value: string) => {
     address = address.substring(address.length - 4).toLowerCase();
 
+    console.log(value)
+
     if (hexRegEx.test(value))
-        return 'Argument is incorrect value';
+        return 'incorrect value (setStack)';
 
     let hexValue = value.toUpperCase();
 
@@ -70,7 +72,7 @@ const setMemory = (address: string, value: any) => {
     address = address.substring(address.length - 4).toLowerCase();
 
     if (hexRegEx.test(value))
-        return 'Argument is incorrect value';
+        return 'incorrect value (setMemory)';
 
     let hexValue = value.toUpperCase();
 
@@ -92,12 +94,12 @@ const setMemory = (address: string, value: any) => {
     return false;
 };
 
-const getMemory = (address: string) => {
+const getMemory = (address: string): string => {
     address = address.toLowerCase();
     if (memory[address] == undefined)
         memory[address] = '00';
 
-    return memory[address];
+    return memory[address] as string;
 };
 
 const getRegisterSize = (register: string): Nullable<Number> => {
@@ -110,7 +112,7 @@ const getRegisterSize = (register: string): Nullable<Number> => {
         return 2;
 };
 
-const setRegister = (register: string, value: any): Nullable<string> => {
+const setRegister = (register: string, value: string): Nullable<string> => {
     let registerSize = getRegisterSize(register);
 
     if (registerSize === null)
@@ -149,12 +151,12 @@ const getRegisterValue = (register: string): Nullable<string> => {
         let valueL = reg[register[0].concat('l')].value;
         valueH = valueH.padStart(2, '0');
         valueL = valueL.padStart(2, '0');
-        return valueH.concat(valueL).concat('h');
+        return valueH.concat(valueL);
     } else {
         if (getRegisterSize(register) == 2)
-            return reg[register].value.padStart(2, '0').concat('h');
+            return reg[register].value.padStart(2, '0');
         else if (getRegisterSize(register) == 4)
-            return reg[register].value.padStart(4, '0').concat('h');
+            return reg[register].value.padStart(4, '0');
     }
 
     return null;
@@ -163,7 +165,7 @@ const getRegisterValue = (register: string): Nullable<string> => {
 export const randomReg = () => {
     for (let r in reg)
         if (r != 'sp' && r[1] != 'h' && r[1] != 'l') {
-            const rand = getRandomInt(0, 65535);
+            const rand = getRandomInt(0, 65535).toHex();
             setRegister(r, rand);
         }
 };
@@ -171,7 +173,7 @@ export const randomReg = () => {
 export const resetReg = () => {
     for (let r in reg)
         if (r != 'sp' && r[1] != 'h' && r[1] != 'l')
-            setRegister(r, 0);
+            setRegister(r, '0');
 };
 
 export const resetData = () => {
@@ -186,7 +188,7 @@ export const resetStack = () => {
     for (let entry in stack)
         stack[entry] = '00';
 
-    setRegister('sp', 0);
+    setRegister('sp', '0');
 
     stackAddress = '0000';
     viewStack(stackAddress, stack);
@@ -274,7 +276,7 @@ const mov = (args: string[]) => {
         return setRegister(args[0], args[1]);
 
     if (arg0Size == arg1Size)
-        return setRegister(args[0], getRegisterValue(args[1]));
+        return setRegister(args[0], getRegisterValue(args[1]) as string);
 
     return 'registers sizes do not match';
 };
@@ -336,8 +338,8 @@ const xchg = (args: string[]) => {
     if (arg0Size != arg1Size)
         return 'registers sizes do not match';
 
-    const tmp = getRegisterValue(args[0]);
-    let result = setRegister(args[0], getRegisterValue(args[1]));
+    const tmp = getRegisterValue(args[0]) as string;
+    let result = setRegister(args[0], getRegisterValue(args[1]) as string);
 
     if (result) return result;
     result = setRegister(args[1], tmp);
